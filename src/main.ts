@@ -1,7 +1,6 @@
 import './style.css'
 
 import * as THREE from "three";
-import { BoxGeometry, GridHelper, MeshBasicMaterial } from 'three';
 
 const scene = new THREE.Scene();
 
@@ -120,7 +119,5 @@ class Grid extends THREE.GridHelper {
 
 const grid : Grid = new Grid(9);
 grid.rotation.x = Math.PI / 2;
-grid.reviveAll();
-
 scene.add(grid);
 
