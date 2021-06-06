@@ -72,6 +72,11 @@ class Grid extends THREE.GridHelper {
 
     constructor(size: number) {
         super(size, size);
+
+        if (size % 2 == 0) {
+            throw new Error(`Size of ${size} is not odd.`)
+        }
+
         this.size = size;
         this.tileMatrix = new Array<Array<Tile>>(size);
 
@@ -104,6 +109,14 @@ class Grid extends THREE.GridHelper {
         this.tileMatrix[x][y].set(value);
     }
 
+    public getRow(x: number) : Array<Tile> {
+        if (x < 0 || x > this.size - 1) {
+            throw new Error(`Row ${x} is out of bounds.`);
+        }
+
+        return this.tileMatrix[x];
+    }
+
     public killAll() : void {
         this.tileMatrix.forEach((arr) => {
             arr.forEach((tile) => tile.kill());
@@ -115,9 +128,48 @@ class Grid extends THREE.GridHelper {
             arr.forEach((tile) => tile.revive());
         })
     }
+
+    public forEachTile(callback: (tile: Tile) => void) {
+        this.tileMatrix.forEach((arr) => {
+            arr.forEach(callback);
+        });
+    }
+
+    public getNeighbors(row: number, col: number) : Array<Tile> {
+        const neighbors = new Array<Tile>();
+
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (x == 0 && y == 0) continue;
+                if (this.isWithinBounds(row + x, col + y)) {
+                    neighbors.push(this.tileMatrix[row + x][col + y]);
+                }
+            }
+        }
+
+        return neighbors;
+    }
+
+    private isWithinBounds(x: number, y: number) {
+        if (x < 0 || x > this.size - 1) {
+            return false;
+        }
+
+        if (y < 0 || y > this.size - 1) {
+            return false;
+        }
+
+        return true;
+    }
 }
 
-const grid : Grid = new Grid(9);
+const grid : Grid = new Grid(7);
 grid.rotation.x = Math.PI / 2;
+
+grid.killAll();
+
+
+const n = grid.getNeighbors(3, 3);
+n.forEach((tile) => tile.revive());
 scene.add(grid);
 
