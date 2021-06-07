@@ -1,8 +1,6 @@
 import './style.css'
 
 import GameOfLife from "./models/game";
-import Grid from './models/grid';
-import * as THREE from "three";
 
 const game: GameOfLife = new GameOfLife(13);
 

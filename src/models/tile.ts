@@ -1,5 +1,9 @@
 import * as THREE from "three";
 
+/**
+ * A wrapper class for Three.JS' Mesh that allows us to have a 
+ * 1x1x0 tile that we can toggle "on" or "off".
+ */
 export default class Tile extends THREE.Mesh{
     alive: boolean;
 
@@ -10,10 +14,15 @@ export default class Tile extends THREE.Mesh{
                 color: alive ? 0xffffff : 0x00000,
             })
         );
+
         this.position.z = -0.001;
         this.alive = alive;
     }
 
+    /*
+        Haven't figured out how to change material on the fly,
+        so we are just instantiating a new material each time.
+    */
     kill() : void {
         if (!this.alive) return;
 
