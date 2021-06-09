@@ -19,13 +19,21 @@ export default class GameOfLife {
         this.group = new THREE.Group();
     }
 
-    public init() : void {
+    public init(initMatrix?: Array<Array<boolean>>) : void {
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
         this.camera.position.z = 10;
 
         this.grid.fillRandom();
+
+        if (initMatrix) {
+            initMatrix!.forEach((x, idx) => {
+                x.forEach((y, idy) => {
+                    this.grid.set(idx, idy, y);
+                })
+            });    
+        }
 
         this.group.add(this.grid);
         this.grid.forEachTile((tile) => this.group.add(tile));

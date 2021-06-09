@@ -19,6 +19,6 @@ function animate() {
     game.renderer.render(game.scene, game.camera);
 }
 
-setInterval(() => game.iterate(), 500);
+setInterval(() => game.iterate(), 5000);
 
 animate();
